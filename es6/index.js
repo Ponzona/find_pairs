@@ -2,11 +2,11 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 canvas.imageSmoothingEnabled = false;
 
-const CARD_W = 125;
+const CARD_W = 120;
 const CARD_H = 200;
 const CARD_GAP = 10;
 const CARD_ROWS = 2;
-const CARD_COLS = 6;
+const CARD_COLS = 4;
 let cardGrid = new Array(CARD_COLS * CARD_ROWS / 2).fill('');
 let compare = [];
 
@@ -14,28 +14,23 @@ let mouseX = 0;
 let mouseY = 0;
 
 const cards = [
-{ id:  0, type: '4 base elements', name: 'Earth', open: false, shown: true },
-{ id:  1, type: '4 base elements', name: 'Water', open: false, shown: true },
-{ id:  2, type: '4 base elements', name: 'Air', open: false, shown: true },
-{ id:  3, type: '4 base elements', name: 'Fire', open: false, shown: true },
-{ id:  4, type: '7 metalls', name: 'Aurum', open: false, shown: true },
-{ id:  5, type: '7 metalls', name: 'Argentum', open: false, shown: true },
-{ id:  6, type: '7 metalls', name: 'Cuprum', open: false, shown: true },
-{ id:  7, type: '7 metalls', name: 'Ferrum', open: false, shown: true },
-{ id:  8, type: '7 metalls', name: 'Stannum', open: false, shown: true },
-{ id:  9, type: '7 metalls', name: 'Hydrargyrum', open: false, shown: true },
-{ id: 10, type: '7 metalls', name: 'Plumbum', open: false, shown: true },
-{ id: 11, type: 'Planets', name: 'Sol (Au)', open: false, shown: true },
-{ id: 12, type: 'Planets', name: 'Luna (Ar)', open: false, shown: true },
-{ id: 13, type: 'Planets', name: 'Venus (Cu)', open: false, shown: true },
-{ id: 14, type: 'Planets', name: 'Mars (Fe)', open: false, shown: true },
-{ id: 15, type: 'Planets', name: 'Iupiter (Sn)', open: false, shown: true },
-{ id: 16, type: 'Planets', name: 'Mercurius (Hg)', open: false, shown: true },
-{ id: 17, type: 'Planets', name: 'Saturnus (Pb)', open: false, shown: true },
-{ id: 18, type: 'Planets', name: 'Terra', open: false, shown: true },
-{ id: 19, type: 'Planets', name: 'Uranus', open: false, shown: true },
-{ id: 20, type: 'Planets', name: 'Neptunus', open: false, shown: true },
-{ id: 21, type: 'Planets', name: 'Pluto', open: false, shown: true },
+{ id:  0, type: 'Elements', name: 'Earth', open: false, shown: true },
+{ id:  1, type: 'Elements', name: 'Water', open: false, shown: true },
+{ id:  2, type: 'Elements', name: 'Air', open: false, shown: true },
+{ id:  3, type: 'Elements', name: 'Fire', open: false, shown: true },
+{ id:  4, type: 'Planets', name: 'Sol', equality: 'Aurum', open: false, shown: true },
+{ id:  5, type: 'Planets', name: 'Luna', equality: 'Argentum', open: false, shown: true },
+{ id:  6, type: 'Planets', name: 'Venus', equality: 'Cuprum', open: false, shown: true },
+{ id:  7, type: 'Planets', name: 'Mars', equality: 'Ferrum', open: false, shown: true },
+{ id:  8, type: 'Planets', name: 'Iupiter', equality: 'Stannum', open: false, shown: true },
+{ id:  9, type: 'Planets', name: 'Mercurius', equality: 'Hydrargyrum', open: false, shown: true },
+{ id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: false, shown: true },
+{ id: 11, type: 'Planets', name: 'Terra', open: false, shown: true },
+{ id: 12, type: 'Planets', name: 'Uranus', open: false, shown: true },
+{ id: 13, type: 'Planets', name: 'Neptunus', open: false, shown: true },
+{ id: 14, type: 'Planets', name: 'Pluto', open: false, shown: true },
+{ id: 15, type: 'Metalls', name: 'Copper', open: false, shown: true },
+// TODO: processes, mundanes, compound
 ];
 
 function cardsReset() {
@@ -104,6 +99,57 @@ function drawCardFront(x, y, width, height, color, card) {
 	ctx.fillRect(x, y, width, height);
 	ctx.closePath();
 	ctx.fill();
+
+	ctx.strokeStyle = 'black';
+	ctx.lineWidth = 4;
+
+	if (card.id === 0) {
+		// draw Earth
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 2, 						y + CARD_H - CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 10, 	y + CARD_H / 3.5);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 5, 						y + CARD_H - CARD_H / 2.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 5, 	y + CARD_H - CARD_H / 2.5);
+		ctx.stroke();
+	}
+
+	if (card.id === 1) {
+		// draw Water
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 2, 						y + CARD_H - CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 10, 	y + CARD_H / 3.5);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 2) {
+		// draw Air
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 2,					 	y + CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H - CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 10,	y + CARD_H - CARD_H / 3.5);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 5, 						y + CARD_H / 2.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 5, 	y + CARD_H / 2.5);
+		ctx.stroke();
+	}
+
+	if (card.id === 3) {
+		// draw Fire
+		ctx.beginPath();
+		ctx.moveTo(x + CARD_W / 2,					 	y + CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H - CARD_H / 3.5);
+		ctx.lineTo(x + CARD_W - CARD_W / 10,	y + CARD_H - CARD_H / 3.5);
+		ctx.closePath();
+		ctx.stroke();
+	}
 
 	ctx.beginPath();
 	ctx.font = '13px verdana';
