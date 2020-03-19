@@ -2,13 +2,16 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 canvas.imageSmoothingEnabled = false;
 
-const CARD_W = 120;
+const CARD_W = 150;
 const CARD_H = 200;
 const CARD_GAP = 10;
 const CARD_ROWS = 2;
-const CARD_COLS = 4;
+const CARD_COLS = 5;
 let cardGrid = new Array(CARD_COLS * CARD_ROWS / 2).fill('');
 let compare = [];
+
+const IMAGE_W = 100;
+const COEF_X = (CARD_W - IMAGE_W) / 2;
 
 let mouseX = 0;
 let mouseY = 0;
@@ -24,12 +27,12 @@ const cards = [
 { id:  7, type: 'Planets', name: 'Mars', equality: 'Ferrum', open: false, shown: true },
 { id:  8, type: 'Planets', name: 'Iupiter', equality: 'Stannum', open: false, shown: true },
 { id:  9, type: 'Planets', name: 'Mercurius', equality: 'Hydrargyrum', open: false, shown: true },
-{ id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: false, shown: true },
-{ id: 11, type: 'Planets', name: 'Terra', open: false, shown: true },
-{ id: 12, type: 'Planets', name: 'Uranus', open: false, shown: true },
-{ id: 13, type: 'Planets', name: 'Neptunus', open: false, shown: true },
-{ id: 14, type: 'Planets', name: 'Pluto', open: false, shown: true },
-{ id: 15, type: 'Metalls', name: 'Copper', open: false, shown: true },
+// { id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: true, shown: true },
+// { id: 11, type: 'Planets', name: 'Terra', open: true, shown: true },
+// { id: 12, type: 'Planets', name: 'Uranus', open: true, shown: true },
+// { id: 13, type: 'Planets', name: 'Neptunus', open: true, shown: true },
+// { id: 14, type: 'Planets', name: 'Pluto', open: true, shown: true },
+// { id: 15, type: 'Metalls', name: 'Copper', open: true, shown: true },
 // TODO: processes, mundanes, compound
 ];
 
@@ -106,23 +109,23 @@ function drawCardFront(x, y, width, height, color, card) {
 	if (card.id === 0) {
 		// draw Earth
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 2, 						y + CARD_H - CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 10, 	y + CARD_H / 3.5);
+		ctx.moveTo(x + COEF_X + 50, y + 130);
+		ctx.lineTo(x + COEF_X + 5,  y + 60);
+		ctx.lineTo(x + COEF_X + 95, y + 60);
 		ctx.closePath();
 		ctx.stroke();
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 5, 						y + CARD_H - CARD_H / 2.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 5, 	y + CARD_H - CARD_H / 2.5);
+		ctx.moveTo(x + COEF_X + 15, y + 100);
+		ctx.lineTo(x + COEF_X + 85, y + 100);
 		ctx.stroke();
 	}
 
 	if (card.id === 1) {
 		// draw Water
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 2, 						y + CARD_H - CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 10, 	y + CARD_H / 3.5);
+		ctx.moveTo(x + COEF_X + 50, y + 130);
+		ctx.lineTo(x + COEF_X + 5,  y + 60);
+		ctx.lineTo(x + COEF_X + 95, y + 60);
 		ctx.closePath();
 		ctx.stroke();
 	}
@@ -130,23 +133,103 @@ function drawCardFront(x, y, width, height, color, card) {
 	if (card.id === 2) {
 		// draw Air
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 2,					 	y + CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H - CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 10,	y + CARD_H - CARD_H / 3.5);
+		ctx.moveTo(x + COEF_X + 50, y + 60);
+		ctx.lineTo(x + COEF_X + 5,  y + 130);
+		ctx.lineTo(x + COEF_X + 95, y + 130);
 		ctx.closePath();
 		ctx.stroke();
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 5, 						y + CARD_H / 2.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 5, 	y + CARD_H / 2.5);
+		ctx.moveTo(x + COEF_X + 15, y + 95);
+		ctx.lineTo(x + COEF_X + 85, y + 95);
 		ctx.stroke();
 	}
 
 	if (card.id === 3) {
 		// draw Fire
 		ctx.beginPath();
-		ctx.moveTo(x + CARD_W / 2,					 	y + CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W / 10, 					y + CARD_H - CARD_H / 3.5);
-		ctx.lineTo(x + CARD_W - CARD_W / 10,	y + CARD_H - CARD_H / 3.5);
+		ctx.moveTo(x + COEF_X + 50, y + 60);
+		ctx.lineTo(x + COEF_X + 5,  y + 130);
+		ctx.lineTo(x + COEF_X + 95, y + 130);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 4) {
+		// draw Sol
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 50, y + 100, 35, 0, 2 * Math.PI);
+		ctx.closePath();
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 50, y + 100, 10, 0, 2 * Math.PI);
+		ctx.closePath();
+		ctx.fill();
+	}
+
+	if (card.id === 5) {
+		// draw Luna
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 40, y + 95, 40, 1.4 * Math.PI, 0.6 * Math.PI, false);
+		ctx.bezierCurveTo(x + COEF_X + 65, y + 110, x + COEF_X + 65, y + 80, x + COEF_X + 28, y + 60);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 6) {
+		// draw Venus
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 50, y + 85, 25, 0, 2 * Math.PI);
+		ctx.moveTo(x + COEF_X + 50, y + 110);
+		ctx.lineTo(x + COEF_X + 50, y + 135);
+		ctx.moveTo(x + COEF_X + 40, y + 125);
+		ctx.lineTo(x + COEF_X + 60, y + 125);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 7) {
+		// draw Mars
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 40, y + 110, 25, 0, 2 * Math.PI);
+		ctx.moveTo(x + COEF_X + 60, y + 97);
+		ctx.lineTo(x + COEF_X + 80, y + 80);
+		ctx.moveTo(x + COEF_X + 65, y + 80);
+		ctx.lineTo(x + COEF_X + 81, y + 81);
+		ctx.moveTo(x + COEF_X + 77, y + 95);
+		ctx.lineTo(x + COEF_X + 80, y + 80);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 8) {
+		// draw Jupiter
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 25, y + 75, 3, 0, Math.PI, false);
+		ctx.bezierCurveTo(x + COEF_X + 25, y + 45, x + COEF_X + 70, y + 55, x + COEF_X + 25, y + 110);
+		ctx.lineTo(x + COEF_X + 80, y + 110);
+		ctx.moveTo(x + COEF_X + 65, y + 130);
+		ctx.lineTo(x + COEF_X + 65, y + 55);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 9) {
+		// draw Mercurius
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 50, y + 95, 25, 0, 2 * Math.PI);
+		ctx.moveTo(x + COEF_X + 50, y + 120);
+		ctx.lineTo(x + COEF_X + 50, y + 145);
+		ctx.moveTo(x + COEF_X + 40, y + 135);
+		ctx.lineTo(x + COEF_X + 60, y + 135);
+		ctx.moveTo(x + COEF_X + 65, y + 55);
+		ctx.arc(x + COEF_X + 50, y + 55, 15, 0, Math.PI, false);
+		ctx.moveTo(x + COEF_X + 65, y + 55);
 		ctx.closePath();
 		ctx.stroke();
 	}
