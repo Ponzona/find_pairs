@@ -2,11 +2,11 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
 canvas.imageSmoothingEnabled = false;
 
-const CARD_W = 150;
-const CARD_H = 200;
+const CARD_W = 125;
+const CARD_H = 190;
 const CARD_GAP = 10;
-const CARD_ROWS = 2;
-const CARD_COLS = 5;
+const CARD_ROWS = 4;
+const CARD_COLS = 6;
 let cardGrid = new Array(CARD_COLS * CARD_ROWS / 2).fill('');
 let compare = [];
 
@@ -27,13 +27,13 @@ const cards = [
 { id:  7, type: 'Planets', name: 'Mars', equality: 'Ferrum', open: false, shown: true },
 { id:  8, type: 'Planets', name: 'Iupiter', equality: 'Stannum', open: false, shown: true },
 { id:  9, type: 'Planets', name: 'Mercurius', equality: 'Hydrargyrum', open: false, shown: true },
-// { id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: true, shown: true },
-// { id: 11, type: 'Planets', name: 'Terra', open: true, shown: true },
-// { id: 12, type: 'Planets', name: 'Uranus', open: true, shown: true },
-// { id: 13, type: 'Planets', name: 'Neptunus', open: true, shown: true },
-// { id: 14, type: 'Planets', name: 'Pluto', open: true, shown: true },
-// { id: 15, type: 'Metalls', name: 'Copper', open: true, shown: true },
+{ id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: false, shown: true },
+{ id: 11, type: 'Planets', name: 'Terra', open: false, shown: true },
+{ id: 12, type: 'Planets', name: 'Uranus', open: false, shown: true },
+
 // TODO: processes, mundanes, compound
+// { id: 13, type: 'Planets', name: 'Neptunus', open: false, shown: true },
+// { id: 14, type: 'Planets', name: 'Pluto', open: false, shown: true },
 ];
 
 function cardsReset() {
@@ -230,6 +230,58 @@ function drawCardFront(x, y, width, height, color, card) {
 		ctx.moveTo(x + COEF_X + 65, y + 55);
 		ctx.arc(x + COEF_X + 50, y + 55, 15, 0, Math.PI, false);
 		ctx.moveTo(x + COEF_X + 65, y + 55);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 10) {
+		// draw Saturnus
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.moveTo(x + COEF_X + 35, y + 55);
+		ctx.lineTo(x + COEF_X + 35, y + 115);
+		ctx.moveTo(x + COEF_X + 28, y + 65);
+		ctx.lineTo(x + COEF_X + 50, y + 65);
+		ctx.moveTo(x + COEF_X + 35, y + 80);
+		ctx.bezierCurveTo(x + COEF_X + 35, y + 80, x + COEF_X + 85, y + 45, x + COEF_X + 60, y + 110);
+		ctx.moveTo(x + COEF_X + 60, y + 110);
+		ctx.bezierCurveTo(x + COEF_X + 50, y + 125, x + COEF_X + 45, y + 135, x + COEF_X + 65, y + 125);
+		ctx.moveTo(x + COEF_X + 65, y + 125);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 11) {
+		// draw Terra
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.arc(x + COEF_X + 50, y + 100, 35, 0, 2 * Math.PI);
+		ctx.moveTo(x + COEF_X + 50, y + 65);
+		ctx.lineTo(x + COEF_X + 50, y + 135);
+		ctx.moveTo(x + COEF_X + 15, y + 100);
+		ctx.lineTo(x + COEF_X + 85, y + 100);
+		ctx.closePath();
+		ctx.stroke();
+	}
+
+	if (card.id === 12) {
+		// draw Uranus
+		ctx.fillStyle = 'black';
+		ctx.beginPath();
+		ctx.moveTo(x + COEF_X + 50, y + 60);
+		ctx.lineTo(x + COEF_X + 50, y + 120);
+		ctx.moveTo(x + COEF_X + 25, y + 90);
+		ctx.lineTo(x + COEF_X + 75, y + 90);
+		ctx.moveTo(x + COEF_X + 15, y + 60);
+		ctx.lineTo(x + COEF_X + 25, y + 60);
+		ctx.lineTo(x + COEF_X + 25, y + 120);
+		ctx.lineTo(x + COEF_X + 15, y + 120);
+		ctx.moveTo(x + COEF_X + 85, y + 60);
+		ctx.lineTo(x + COEF_X + 75, y + 60);
+		ctx.lineTo(x + COEF_X + 75, y + 120);
+		ctx.lineTo(x + COEF_X + 85, y + 120);
+		ctx.moveTo(x + COEF_X + 55, y + 125);
+		ctx.arc(x + COEF_X + 50, y + 125, 5, 0, 2 * Math.PI);
 		ctx.closePath();
 		ctx.stroke();
 	}
