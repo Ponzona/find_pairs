@@ -7,7 +7,7 @@ const CARD_H = 190;
 const CARD_GAP = 10;
 const CARD_ROWS = 4;
 const CARD_COLS = 6;
-let cardGrid = new Array(CARD_COLS * CARD_ROWS / 2).fill('');
+let cardGrid = new Array(CARD_COLS * CARD_ROWS / 2);
 let compare = [];
 
 const IMAGE_W = 100;
@@ -17,19 +17,19 @@ let mouseX = 0;
 let mouseY = 0;
 
 const cards = [
-{ id:  0, type: 'Elements', name: 'Earth', open: false, shown: true },
-{ id:  1, type: 'Elements', name: 'Water', open: false, shown: true },
-{ id:  2, type: 'Elements', name: 'Air', open: false, shown: true },
-{ id:  3, type: 'Elements', name: 'Fire', open: false, shown: true },
-{ id:  4, type: 'Planets', name: 'Sol', equality: 'Aurum', open: false, shown: true },
-{ id:  5, type: 'Planets', name: 'Luna', equality: 'Argentum', open: false, shown: true },
-{ id:  6, type: 'Planets', name: 'Venus', equality: 'Cuprum', open: false, shown: true },
-{ id:  7, type: 'Planets', name: 'Mars', equality: 'Ferrum', open: false, shown: true },
-{ id:  8, type: 'Planets', name: 'Iupiter', equality: 'Stannum', open: false, shown: true },
-{ id:  9, type: 'Planets', name: 'Mercurius', equality: 'Hydrargyrum', open: false, shown: true },
-{ id: 10, type: 'Planets', name: 'Saturnus', equality: 'Plumbum', open: false, shown: true },
-{ id: 11, type: 'Planets', name: 'Terra', open: false, shown: true },
-{ id: 12, type: 'Planets', name: 'Uranus', open: false, shown: true },
+{ id:  0, type: 'Elements', open: false, shown: true, name: 'Earth' },
+{ id:  1, type: 'Elements', open: false, shown: true, name: 'Water' },
+{ id:  2, type: 'Elements', open: false, shown: true, name: 'Air' },
+{ id:  3, type: 'Elements', open: false, shown: true, name: 'Fire' },
+{ id:  4, type: 'Planets',  open: false, shown: true, name: 'Sol', equality: 'Aurum' },
+{ id:  5, type: 'Planets',  open: false, shown: true, name: 'Luna', equality: 'Argentum' },
+{ id:  6, type: 'Planets',  open: false, shown: true, name: 'Venus', equality: 'Cuprum' },
+{ id:  7, type: 'Planets',  open: false, shown: true, name: 'Mars', equality: 'Ferrum' },
+{ id:  8, type: 'Planets',  open: false, shown: true, name: 'Iupiter', equality: 'Stannum' },
+{ id:  9, type: 'Planets',  open: false, shown: true, name: 'Mercurius', equality: 'Hydrargyrum' },
+{ id: 10, type: 'Planets',  open: false, shown: true, name: 'Saturnus', equality: 'Plumbum' },
+{ id: 11, type: 'Planets',  open: false, shown: true, name: 'Terra' },
+{ id: 12, type: 'Planets',  open: false, shown: true, name: 'Uranus' },
 
 // TODO: processes, mundanes, compound
 // { id: 13, type: 'Planets', name: 'Neptunus', open: false, shown: true },
@@ -38,29 +38,39 @@ const cards = [
 
 function cardsReset() {
 	let i = 0;
+	let randomCards = new Array(cardGrid.length).fill('');
 	do {
 		let randomCard = getRandomCard();
-		if (!cardGrid.find(item => item.id === randomCard.id)) {
-			cardGrid[i] = randomCard;
+		if (!randomCards.find(item => item.id === randomCard.id)) {
+			randomCards[i] = randomCard;
 			i++;
 		}
 	} while (i < CARD_COLS * CARD_ROWS / 2);
-	cardGrid = messCardsArray(cardGrid.concat(cardGrid.map(object => ({ ...object }))));
+	messCardsArray(randomCards);
 }
 
 function messCardsArray(arr) {
-	var j, temp;
-	for(var i = arr.length - 1; i > 0; i--){
-		j = Math.floor(Math.random()*(i + 1));
-		temp = arr[j];
-		arr[j] = arr[i];
-		arr[i] = temp;
+	let cardsArray = arr.concat(arr.map(object => ({ ...object })));
+	let arrayOfIndex = [];
+	for (let i = 0; i < CARD_COLS * CARD_ROWS; i++) {
+		arrayOfIndex[i] = i;
 	}
-	return arr;
+
+	cardsArray.forEach((el) => {
+		let randomCardPlace = getRandomPlace(arrayOfIndex);
+		cardGrid[randomCardPlace] = el;
+
+		let itemForRemove = arrayOfIndex.indexOf(randomCardPlace);
+		arrayOfIndex.splice(itemForRemove, 1);
+	});
+}
+
+function getRandomPlace(arr) {
+	return arr[Math.floor(Math.random() * arr.length)];
 }
 
 function getRandomCard() {
-	return cards[Math.floor(Math.random() * cards.length)];
+	return cards[Math.floor(Math.random() * Math.floor(cards.length))];
 }
 
 function rowColToArrayIndex(col, row) {
@@ -322,7 +332,7 @@ function updateMousePos(evt) {
 	if(cardColumn >= 0 && cardColumn < CARD_COLS &&
 		cardRow >= 0 && cardRow < CARD_ROWS) {
 
-		if(cardGrid[cardUnderClick]) {
+		if(cardGrid[cardUnderClick] && !cardGrid[cardUnderClick].open) {
 			compareCards(cardUnderClick);
 			drawAll();
 		}
@@ -338,8 +348,6 @@ function compareCards(card) {
 	if (compare.length === 2) {
 		if (cardGrid[compare[0]].id === cardGrid[compare[1]].id) {
 			setTimeout(function() {
-				// cardGrid[compare[0]].shown = false;
-				// cardGrid[compare[1]].shown = false;
 				compare = [];
 				drawAll();
 			}, 1000);
